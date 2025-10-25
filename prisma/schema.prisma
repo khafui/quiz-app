@@ -1,0 +1,195 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+//
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+//
+// model User {
+//   id        String   @id @default(cuid())
+//   clerkId   String   @unique
+//   email     String?
+//   role      String   @default("USER")
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   questions Question[] @relation("UserQuestions")
+// }
+//
+// model Question {
+//   id         String   @id @default(cuid())
+//   text       String
+//   isMultiple Boolean  @default(false)
+//   correctIds String[] @default([])
+//   options    Option[]
+//   createdBy  String?
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+// }
+//
+// model Option {
+//   id         String   @id @default(cuid())
+//   text       String
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   questionId String
+// }
+//
+// model QuizResult {
+//   id        String   @id @default(cuid())
+//   userId    String
+//   total     Int
+//   correct   Int
+//   score     Float
+//   createdAt DateTime @default(now())
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+//
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+//
+// model User {
+//   id        String     @id @default(cuid())
+//   clerkId   String     @unique
+//   email     String?
+//   name      String?
+//   role      String     @default("USER")
+//   createdAt DateTime   @default(now())
+//   updatedAt DateTime   @updatedAt
+//   questions Question[] @relation("UserQuestions")
+// }
+//
+// model Question {
+//   id         String   @id @default(cuid())
+//   text       String
+//   isMultiple Boolean  @default(false)
+//   correctIds String[] @default([])
+//   options    Option[]
+//   createdBy  String?
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+//
+//   // 👇 Add this line to complete the relation
+//   user User? @relation("UserQuestions", fields: [createdBy], references: [id])
+// }
+//
+// model Option {
+//   id         String   @id @default(cuid())
+//   text       String
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   questionId String
+// }
+//
+// model QuizResult {
+//   id        String   @id @default(cuid())
+//   userId    String
+//   total     Int
+//   correct   Int
+//   score     Float
+//   createdAt DateTime @default(now())
+// }
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// USERS
+model User {
+  id          String       @id @default(cuid())
+  clerkId     String       @unique
+  email       String?
+  name        String?
+  role        String       @default("USER")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  questions   Question[]   @relation("UserQuestions")
+  quizResults QuizResult[]
+  courseStats CourseStat[]
+}
+
+// COURSES / CATEGORIES
+model Course {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  quizzes     Quiz[]
+  courseStats CourseStat[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// QUIZZES
+model Quiz {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  image       String?
+  courseId    String
+  course      Course       @relation(fields: [courseId], references: [id])
+  questions   Question[]
+  quizResults QuizResult[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// QUESTIONS
+model Question {
+  id         String   @id @default(cuid())
+  text       String
+  isMultiple Boolean  @default(false)
+  correctIds String[] @default([])
+  options    Option[]
+  quizId     String
+  quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  createdBy  String?
+  user       User?    @relation("UserQuestions", fields: [createdBy], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// OPTIONS
+model Option {
+  id         String   @id @default(cuid())
+  text       String
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+// USER QUIZ RESULTS
+model QuizResult {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  total     Int
+  correct   Int
+  score     Float
+  createdAt DateTime @default(now())
+}
+
+// USER COURSE STATS
+model CourseStat {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  courseId     String
+  course       Course    @relation(fields: [courseId], references: [id])
+  attempts     Int       @default(0) // Total attempts in this course
+  completed    Int       @default(0) // Total completed quizzes
+  averageScore Float? // Average score across all quizzes
+  lastAttempt  DateTime? // Last attempt timestamp
+
+  @@unique([userId, courseId])
+}
