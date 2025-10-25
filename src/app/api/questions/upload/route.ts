@@ -67,12 +67,12 @@ export async function POST(req) {
       },
       include: { options: true }
     });
-    const msrc/apped = [];
+    const mapped = [];
     for (const idx of correctIndexes) {
-      if (typeof idx === 'number' && q.options[idx]) msrc/apped.push(q.options[idx].id);
+      if (typeof idx === 'number' && q.options[idx]) mapped.push(q.options[idx].id);
     }
-    if (msrc/apped.length) {
-      await prisma.question.update({ where: { id: q.id }, data: { correctIds: msrc/apped } });
+    if (mapped.length) {
+      await prisma.question.update({ where: { id: q.id }, data: { correctIds: mapped } });
     }
     created.push(q);
   }
