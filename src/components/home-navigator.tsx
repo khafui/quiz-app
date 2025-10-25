@@ -24,9 +24,9 @@ const HomeNavigator = () => {
         <div className="flex gap-x-4">
             {/*<Link href="/courses" className="rounded bg-slate-800 text-white px-3 py-1">Take Quizzes</Link>*/}
             <Link href="/courses" className="shad-primary-btn">Take Quizzes</Link>
-            {/*{isAdmin && */}
+            {user &&
                 <Link href="/admin" className="rounded border-2 border-border font-semibold hover:border-primary px-3 py-2">Dashboard</Link>
-            {/* }*/}
+             }
         </div>
     )
 }
