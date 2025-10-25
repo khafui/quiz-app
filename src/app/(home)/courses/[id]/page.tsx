@@ -76,7 +76,7 @@ export default function TakeQuiz({ params }: { params: { id: string } }) {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="p-6">
+    <div className="md:p-6">
       <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
         {quizzes.length > 0 ? quizzes.map((quiz: IQuiz) => (
             <HomeCard
