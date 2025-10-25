@@ -27,7 +27,7 @@ const Banner = ({ title }: { title: string }) => {
                 <h1 className="text-2xl font-bold">{title}</h1>
                 <div className="flex items-center gap-2">
                     {activeUser && (
-                        <p className="text-gray-500 text-sm">
+                        <p className="hidden md:inline text-gray-500 text-sm">
                             {activeUser?.email}
                         </p>
                     )}
