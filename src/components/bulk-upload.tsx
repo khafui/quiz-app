@@ -477,7 +477,16 @@ export default function BulkUpload() {
 
   return (
       <div className="bg-white p-6 rounded-xl shadow space-y-4 mx-auto mt-8">
-        <h3 className="font-semibold text-lg">📘 Bulk Upload New Quiz</h3>
+        <div className="flex justify-between items-center">
+          <h3 className="font-semibold text-lg">Bulk Upload New Quiz</h3>
+          <a
+              href="/api/questions/template"
+              className="text-blue-600"
+              download
+          >
+            Download CSV Template
+          </a>
+        </div>
 
         {/* COURSE SELECT */}
         <div>
