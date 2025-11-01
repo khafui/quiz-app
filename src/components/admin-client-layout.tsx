@@ -39,10 +39,11 @@ export default function AdminLayoutClient({
                 {
                     label: 'Courses',
                     icon: BookOpen,
-                    submenu: [
-                        { label: 'All Courses', href: '/admin/courses' },
-                        { label: 'Add New', href: '/admin/courses/new' },
-                    ],
+                    // submenu: [
+                    //     { label: 'All Courses', href: '/admin/course' },
+                    //     // { label: 'Add New', href: '/admin/courses/new' },
+                    // ],
+                    href: '/admin/course'
                 },
             ]
             : []),

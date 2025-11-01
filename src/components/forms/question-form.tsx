@@ -389,8 +389,9 @@
 
 
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {Loader2} from "lucide-react";
 
 type Option = { text: string };
 type Question = {
@@ -407,6 +408,8 @@ export default function QuestionForm() {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [quizTitle, setQuizTitle] = useState('');
   const [quizDescription, setQuizDescription] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([
     { text: '', isMultiple: false, options: [{ text: '' }, { text: '' }], correctIndexes: [] },
   ]);
@@ -461,6 +464,8 @@ export default function QuestionForm() {
       alert('Please fill all required fields.');
       return;
     }
+    setLoading(true)
+    setDisabled(true);
 
     setStatus('Creating quiz and adding questions...');
 
@@ -483,11 +488,15 @@ export default function QuestionForm() {
       setQuestions([
         { text: '', isMultiple: false, options: [{ text: '' }, { text: '' }], correctIndexes: [] },
       ]);
+      setLoading(false);
+      setDisabled(false);
       router.refresh();
     } else {
       const err = await res.json().catch(() => ({ error: 'Unknown' }));
       setStatus(`❌ Failed: ${err.error}`);
     }
+    setLoading(false);
+    setDisabled(false);
   };
 
   return (
@@ -612,10 +621,12 @@ export default function QuestionForm() {
           </button>
 
           <button
+              disabled={disabled}
               type="button"
               onClick={handleSubmit}
               className="shad-primary-btn cursor-pointer text-white px-4 py-2 rounded"
           >
+            {loading && <Loader2 className="size-5 animate-spin"/>}
             Submit Quiz
           </button>
         </div>

@@ -31,7 +31,7 @@ export default function CoursesPage() {
         <div className="md:p-6">
             <h1 className="text-2xl font-bold mb-4">Courses</h1>
             {/*<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">*/}
-            <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-2">
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 w-full lg:grid-cols-3 gap-y-8">
                 {courses.map((course: ICourse) => (
                         <HomeCard
                             key={course.id}

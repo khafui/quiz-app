@@ -658,7 +658,7 @@ export default function QuizTest({ params }: { params: { id: string } }) {
 
             const res = await fetch(`/api/courses/stats/${courseId}`);
             const data = await res.json();
-            console.log("res: ", data)
+            // console.log("res: ", data)
 
             if (res.ok) setStats(data);
             else setStats({ attempts: 0, completed: 0 });
